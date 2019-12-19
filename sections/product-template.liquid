@@ -1,9 +1,24 @@
+<div class="product-scrolled">
+    <div class="page-width">
+      <div class="d-flex product-scrolled-meta">
+        <div class="mr-5">
+          <img src="{{ product.featured_image | img_url }}"/>
+        </div>
+        <div class="mt-3">
+          <div class="product-title">{{ product.title }}</div>
+          <div class="product-reviews"> {% include 'judgeme_widgets', widget_type: 'judgeme_preview_badge', jm_style: '', concierge_install: false %}</div>
+        </div>
+      </div>
+    </div>
+</div>
+
 <div class="product-template__container page-width"
   id="ProductSection-{{ section.id }}"
   data-section-id="{{ section.id }}"
   data-section-type="product"
   data-enable-history-state="true"
 >
+
   {% comment %}
     Get first variant, or deep linked one
   {% endcomment %}
@@ -458,8 +473,8 @@
   <hr class="my-7">
   <div class="row">
     {% if product.metafields.custom_fields["all_ingredients_"] != blank %}
-      <div class="col-sm-6">
-
+      <div class="col-sm-6 pr-sm-6">
+        <div class="mb-3"><img src="https://earthbar.s3-ap-southeast-2.amazonaws.com/leaf-circle-icon.svg" alt="Leaf circle icon" /></div>
         <h4>Ingredients</h4>
         <div class="text-sm">
           {{ product.metafields.custom_fields["all_ingredients_"] }}
@@ -468,7 +483,8 @@
      
   {% endif %}
   {% if product.type == 'Soap' %}
-    <div class="col-sm-6 product-info">
+    <div class="col-sm-6 product-info pl-sm-6">
+      <div class="mb-3"><img src="https://earthbar.s3-ap-southeast-2.amazonaws.com/hand-icon.svg" alt="Hand icon" /></div>
       <h4>Product Notes</h4>
       <p class="text-sm">This soap is made from scratch with the cold process method, using quality oils that produces a gentle and bubbly soap. It contains no artificial colours or scents. </p>
       <p class="text-sm">Due to 100% handcrafted products, the size, colour and shape may slightly vary from the picture. </p>

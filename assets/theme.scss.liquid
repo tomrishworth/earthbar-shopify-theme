@@ -3424,9 +3424,20 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
   @include flex-wrap(wrap);
   align-items: center;
   width: auto;
-  padding: 1rem;
+  padding: 10px 20px;
   border: 1px solid darken($light-blue, 10%);
   background: $light-blue;
+  z-index: 2;
+  @include media-query($medium-up) {
+    padding: 1rem;
+  }
+}
+
+.scrolled {
+  .product-form {
+    border-left-color: transparent;
+    border-right-color: transparent;
+  }
 }
 
 .product-form--payment-button-no-variants {
@@ -3434,7 +3445,9 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .product-form__item {
-  @include flex(1 1 200px);
+  @include media-query($medium-up) {
+    @include flex(1 1 200px);
+  }
   // padding: 0 5px;
 
   label {
@@ -3455,11 +3468,16 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .product-form__item--submit {
-  @include flex(1 1 300px);
+  @include media-query($medium-up) {
+    @include flex(1 1 300px);
+  }
+
 }
 
 .product-form__item--no-variants {
-  max-width: 400px;
+  @include media-query($medium-up) {
+    max-width: 400px;
+  }
 }
 
 .product-form__item--payment-button {
@@ -3488,7 +3506,10 @@ $color-blankstate-background: rgba($color-body-text, 0.1);
 }
 
 .product-form__item--quantity {
-  @include flex(0 0 70px);
+  @include flex(0 0 56px);
+  @include media-query($medium-up) {
+    @include flex(0 0 70px);
+  }
   display: flex;
   align-items: center;
   label {
@@ -7037,5 +7058,37 @@ $toolbar-height-small: 46px;
     width: 40%;
     margin-left: auto;
     margin-right: auto;
+  }
+}
+
+.product-scrolled {
+  opacity: 0;
+  background-color: $light-blue;
+  border: 1px solid darken($light-blue, 10%);
+  position: fixed;
+  overflow: hidden;
+  height: 66px;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  transition: opacity 500ms ease;
+  @include media-query($medium-up) {
+    height: 78px;
+  }
+  .scrolled & {
+    opacity: 1
+  }
+  img {
+    max-width:100%;
+    height:77px;
+  }
+}
+
+.product-scrolled-meta {
+  transform: translate3d(0, -10px, 0);
+  transition: transform 500ms ease-in-out;
+  .scrolled & {
+    transform: none;
   }
 }

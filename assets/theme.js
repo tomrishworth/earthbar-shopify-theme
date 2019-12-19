@@ -168,9 +168,7 @@ slate.rte = {
    * @param {string} options.tableWrapperClass - table wrapper class name
    */
   wrapTable: function(options) {
-    options.$tables.wrap(
-      '<div class="' + options.tableWrapperClass + '"></div>'
-    );
+    options.$tables.wrap('<div class="' + options.tableWrapperClass + '"></div>');
   },
 
   /**
@@ -267,21 +265,15 @@ slate.a11y = {
   trapFocus: function(options) {
     var eventsName = {
       focusin: options.namespace ? 'focusin.' + options.namespace : 'focusin',
-      focusout: options.namespace
-        ? 'focusout.' + options.namespace
-        : 'focusout',
-      keydown: options.namespace
-        ? 'keydown.' + options.namespace
-        : 'keydown.handleFocus'
+      focusout: options.namespace ? 'focusout.' + options.namespace : 'focusout',
+      keydown: options.namespace ? 'keydown.' + options.namespace : 'keydown.handleFocus'
     };
 
     /**
      * Get every possible visible focusable element
      */
     var $focusableElements = options.$container.find(
-      $(
-        'button, [href], input, select, textarea, [tabindex]:not([tabindex^="-"])'
-      ).filter(':visible')
+      $('button, [href], input, select, textarea, [tabindex]:not([tabindex^="-"])').filter(':visible')
     );
     var firstFocusable = $focusableElements[0];
     var lastFocusable = $focusableElements[$focusableElements.length - 1];
@@ -337,9 +329,7 @@ slate.a11y = {
    * @param {string} options.namespace - Namespace used for new focus event handler
    */
   removeTrapFocus: function(options) {
-    var eventName = options.namespace
-      ? 'focusin.' + options.namespace
-      : 'focusin';
+    var eventName = options.namespace ? 'focusin.' + options.namespace : 'focusin';
 
     if (options.$container && options.$container.length) {
       options.$container.removeAttr('tabindex');
@@ -386,8 +376,7 @@ slate.a11y = {
       var htmlMessages = '';
 
       for (var message in messages) {
-        htmlMessages +=
-          '<li id=' + idSelectors[message] + '>' + messages[message] + '</li>';
+        htmlMessages += '<li id=' + idSelectors[message] + '>' + messages[message] + '</li>';
       }
 
       container.setAttribute('hidden', true);
@@ -486,9 +475,7 @@ theme.Images = (function() {
    * @returns {null}
    */
   function imageSize(src) {
-    var match = src.match(
-      /.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\\.@]/
-    );
+    var match = src.match(/.+_((?:pico|icon|thumb|small|compact|medium|large|grande)|\d{1,4}x\d{0,4}|x\d{1,4})[_\\.@]/);
 
     if (match !== null) {
       if (match[2] !== undefined) {
@@ -518,9 +505,7 @@ theme.Images = (function() {
       return this.removeProtocol(src);
     }
 
-    var match = src.match(
-      /\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i
-    );
+    var match = src.match(/\.(jpg|jpeg|gif|png|bmp|bitmap|tiff|tif)(\?v=\d+)?$/i);
 
     if (match !== null) {
       var prefix = src.split(match[0]);
@@ -581,10 +566,7 @@ theme.Currency = (function() {
       number = (number / 100.0).toFixed(precision);
 
       var parts = number.split('.');
-      var dollarsAmount = parts[0].replace(
-        /(\d)(?=(\d\d\d)+(?!\d))/g,
-        '$1' + thousands
-      );
+      var dollarsAmount = parts[0].replace(/(\d)(?=(\d\d\d)+(?!\d))/g, '$1' + thousands);
       var centsAmount = parts[1] ? decimal + parts[1] : '';
 
       return dollarsAmount + centsAmount;
@@ -644,10 +626,7 @@ slate.Variants = (function() {
     this.enableHistoryState = options.enableHistoryState;
     this.currentVariant = this._getVariantFromOptions();
 
-    $(this.singleOptionSelector, this.$container).on(
-      'change',
-      this._onSelectChange.bind(this)
-    );
+    $(this.singleOptionSelector, this.$container).on('change', this._onSelectChange.bind(this));
   }
 
   Variants.prototype = _.assignIn({}, Variants.prototype, {
@@ -658,30 +637,27 @@ slate.Variants = (function() {
      * @return {array} options - Values of currently selected variants
      */
     _getCurrentOptions: function() {
-      var currentOptions = _.map(
-        $(this.singleOptionSelector, this.$container),
-        function(element) {
-          var $element = $(element);
-          var type = $element.attr('type');
-          var currentOption = {};
+      var currentOptions = _.map($(this.singleOptionSelector, this.$container), function(element) {
+        var $element = $(element);
+        var type = $element.attr('type');
+        var currentOption = {};
 
-          if (type === 'radio' || type === 'checkbox') {
-            if ($element[0].checked) {
-              currentOption.value = $element.val();
-              currentOption.index = $element.data('index');
-
-              return currentOption;
-            } else {
-              return false;
-            }
-          } else {
+        if (type === 'radio' || type === 'checkbox') {
+          if ($element[0].checked) {
             currentOption.value = $element.val();
             currentOption.index = $element.data('index');
 
             return currentOption;
+          } else {
+            return false;
           }
+        } else {
+          currentOption.value = $element.val();
+          currentOption.index = $element.data('index');
+
+          return currentOption;
         }
-      );
+      });
 
       // remove any unchecked input values if using radio buttons or checkboxes
       currentOptions = _.compact(currentOptions);
@@ -744,10 +720,7 @@ slate.Variants = (function() {
       var variantImage = variant.featured_image || {};
       var currentVariantImage = this.currentVariant.featured_image || {};
 
-      if (
-        !variant.featured_image ||
-        variantImage.src === currentVariantImage.src
-      ) {
+      if (!variant.featured_image || variantImage.src === currentVariantImage.src) {
         return;
       }
 
@@ -806,12 +779,7 @@ slate.Variants = (function() {
       }
 
       var newurl =
-        window.location.protocol +
-        '//' +
-        window.location.host +
-        window.location.pathname +
-        '?variant=' +
-        variant.id;
+        window.location.protocol + '//' + window.location.host + window.location.pathname + '?variant=' + variant.id;
       window.history.replaceState({ path: newurl }, '', newurl);
     },
 
@@ -827,7 +795,6 @@ slate.Variants = (function() {
 
   return Variants;
 })();
-
 
 /* ================ GLOBAL ================ */
 /*============================================================================
@@ -892,9 +859,7 @@ theme.Drawers = (function() {
     // transition for close animation
     this.$drawer.prepareTransition();
 
-    this.nodes.$parent.addClass(
-      this.config.openClass + ' ' + this.config.dirOpenClass
-    );
+    this.nodes.$parent.addClass(this.config.openClass + ' ' + this.config.dirOpenClass);
     this.drawerIsOpen = true;
 
     // Set focus on drawer
@@ -904,10 +869,7 @@ theme.Drawers = (function() {
     });
 
     // Run function when draw opens if set
-    if (
-      this.config.onDrawerOpen &&
-      typeof this.config.onDrawerOpen === 'function'
-    ) {
+    if (this.config.onDrawerOpen && typeof this.config.onDrawerOpen === 'function') {
       if (!externalCall) {
         this.config.onDrawerOpen();
       }
@@ -934,9 +896,7 @@ theme.Drawers = (function() {
     // Ensure closing transition is applied to moved elements, like the nav
     this.$drawer.prepareTransition();
 
-    this.nodes.$parent.removeClass(
-      this.config.dirOpenClass + ' ' + this.config.openClass
-    );
+    this.nodes.$parent.removeClass(this.config.dirOpenClass + ' ' + this.config.openClass);
 
     if (this.$activeSource && this.$activeSource.attr('aria-expanded')) {
       this.$activeSource.attr('aria-expanded', 'false');
@@ -953,10 +913,7 @@ theme.Drawers = (function() {
     this.unbindEvents();
 
     // Run function when draw closes if set
-    if (
-      this.config.onDrawerClose &&
-      typeof this.config.onDrawerClose === 'function'
-    ) {
+    if (this.config.onDrawerClose && typeof this.config.onDrawerClose === 'function') {
       this.config.onDrawerClose();
     }
   };
@@ -997,7 +954,6 @@ theme.Drawers = (function() {
   return Drawer;
 })();
 
-
 /* ================ MODULES ================ */
 window.theme = window.theme || {};
 
@@ -1032,10 +988,7 @@ theme.Header = (function() {
     // check when we're leaving a dropdown and close the active dropdown
     $(selectors.siteNavChildLink).on('focusout.siteNav', function() {
       setTimeout(function() {
-        if (
-          $(document.activeElement).hasClass(config.childLinkClass) ||
-          !cache.$activeDropdown.length
-        ) {
+        if ($(document.activeElement).hasClass(config.childLinkClass) || !cache.$activeDropdown.length) {
           return;
         }
 
@@ -1196,8 +1149,7 @@ theme.MobileNav = (function() {
     });
 
     cache.$pageContainer.css({
-      transform:
-        'translate3d(0, ' + cache.$mobileNavContainer[0].scrollHeight + 'px, 0)'
+      transform: 'translate3d(0, ' + cache.$mobileNavContainer[0].scrollHeight + 'px, 0)'
     });
 
     slate.a11y.trapFocus({
@@ -1265,9 +1217,7 @@ theme.MobileNav = (function() {
 
     if (isReturn) {
       // Close all subnavs by removing active class on buttons
-      $(
-        '.' + classes.subNavToggleBtn + '[data-level="' + (menuLevel - 1) + '"]'
-      ).removeClass(classes.subNavActive);
+      $('.' + classes.subNavToggleBtn + '[data-level="' + (menuLevel - 1) + '"]').removeClass(classes.subNavActive);
 
       if ($activeTrigger && $activeTrigger.length) {
         $activeTrigger.removeClass(classes.subNavActive);
@@ -1284,9 +1234,7 @@ theme.MobileNav = (function() {
   function goToSubnav(target) {
     /*eslint-disable shopify/jquery-dollar-sign-reference */
 
-    var $targetMenu = target
-      ? $('.mobile-nav__dropdown[data-parent="' + target + '"]')
-      : cache.$mobileNav;
+    var $targetMenu = target ? $('.mobile-nav__dropdown[data-parent="' + target + '"]') : cache.$mobileNav;
 
     menuLevel = $targetMenu.data('level') ? $targetMenu.data('level') : 1;
 
@@ -1300,8 +1248,7 @@ theme.MobileNav = (function() {
 
     var translateMenuHeight = $targetMenu.outerHeight();
 
-    var openNavClass =
-      menuLevel > 2 ? classes.thirdNavShowing : classes.subNavShowing;
+    var openNavClass = menuLevel > 2 ? classes.thirdNavShowing : classes.subNavShowing;
 
     cache.$mobileNavContainer
       .css('height', translateMenuHeight)
@@ -1310,9 +1257,7 @@ theme.MobileNav = (function() {
 
     if (!target) {
       // Show top level nav
-      cache.$mobileNavContainer
-        .removeClass(classes.thirdNavShowing)
-        .removeClass(classes.subNavShowing);
+      cache.$mobileNavContainer.removeClass(classes.thirdNavShowing).removeClass(classes.subNavShowing);
     }
 
     /* if going back to first subnav, focus is on whole header */
@@ -1392,18 +1337,13 @@ theme.Search = (function() {
 
     initDrawer();
 
-    var isSearchPage =
-      slate.utils.getParameterByName('q') !== null &&
-      window.location.pathname === '/search';
+    var isSearchPage = slate.utils.getParameterByName('q') !== null && window.location.pathname === '/search';
 
     if (isSearchPage) {
       validateSearchResultForm.call(this);
     }
 
-    $(selectors.searchResultSubmit).on(
-      'click',
-      validateSearchResultForm.bind(this)
-    );
+    $(selectors.searchResultSubmit).on('click', validateSearchResultForm.bind(this));
 
     $(selectors.searchHeaderInput)
       .add(selectors.searchHeaderSubmit)
@@ -1459,9 +1399,7 @@ theme.Search = (function() {
    */
   function hideErrorMessage() {
     this.$searchErrorMessage.addClass(classes.hidden);
-    this.$searchResultInput
-      .removeAttr('aria-describedby')
-      .removeAttr('aria-invalid');
+    this.$searchResultInput.removeAttr('aria-describedby').removeAttr('aria-invalid');
   }
 
   /**
@@ -1469,9 +1407,7 @@ theme.Search = (function() {
    */
   function showErrorMessage() {
     this.$searchErrorMessage.removeClass(classes.hidden);
-    this.$searchResultInput
-      .attr('aria-describedby', 'error-search-form')
-      .attr('aria-invalid', true);
+    this.$searchResultInput.attr('aria-describedby', 'error-search-form').attr('aria-invalid', true);
   }
 
   function validateSearchResultForm(evt) {
@@ -1627,9 +1563,7 @@ theme.Slideshow = (function() {
   function beforeChange(event, slick, currentSlide, nextSlide) {
     var $slider = slick.$slider;
     var $currentSlide = $slider.find('.' + classes.currentSlide);
-    var $nextSlide = $slider.find(
-      '.slideshow__slide[data-slick-index="' + nextSlide + '"]'
-    );
+    var $nextSlide = $slider.find('.slideshow__slide[data-slick-index="' + nextSlide + '"]');
 
     if (isVideoInSlide($currentSlide)) {
       var $currentVideo = $currentSlide.find('.' + classes.video);
@@ -1767,10 +1701,7 @@ theme.SlideshowVideo = (function() {
   }
 
   function pauseVideo(playerId) {
-    if (
-      videoPlayers[playerId] &&
-      typeof videoPlayers[playerId].pauseVideo === 'function'
-    ) {
+    if (videoPlayers[playerId] && typeof videoPlayers[playerId].pauseVideo === 'function') {
       videoPlayers[playerId].pauseVideo();
     }
   }
@@ -1828,9 +1759,7 @@ theme.SlideshowVideo = (function() {
   }
 
   function setAutoplaySupport(supported) {
-    var supportClass = supported
-      ? classes.supportsAutoplay
-      : classes.supportsNoAutoplay;
+    var supportClass = supported ? classes.supportsAutoplay : classes.supportsNoAutoplay;
     $(document.documentElement).addClass(supportClass);
 
     if (!supported) {
@@ -2118,13 +2047,9 @@ theme.SlideshowVideo = (function() {
       .removeClass(classes.videoBackground)
       .addClass(classes.videoChrome);
 
-    videos[playerId].$parentSlideshowWrapper
-      .removeClass(classes.slideBackgroundVideo)
-      .addClass(classes.playing);
+    videos[playerId].$parentSlideshowWrapper.removeClass(classes.slideBackgroundVideo).addClass(classes.playing);
 
-    videos[playerId].$parentSlide
-      .removeClass(classes.slideBackgroundVideo)
-      .addClass(classes.playing);
+    videos[playerId].$parentSlide.removeClass(classes.slideBackgroundVideo).addClass(classes.playing);
 
     videos[playerId].status = 'open';
   }
@@ -2142,16 +2067,12 @@ theme.SlideshowVideo = (function() {
   }
 
   function initEvents() {
-    $(document).on('click.videoPlayer', '.' + classes.playVideoBtn, function(
-      evt
-    ) {
+    $(document).on('click.videoPlayer', '.' + classes.playVideoBtn, function(evt) {
       var playerId = $(evt.currentTarget).data('controls');
       startVideoOnClick(playerId);
     });
 
-    $(document).on('click.videoPlayer', '.' + classes.closeVideoBtn, function(
-      evt
-    ) {
+    $(document).on('click.videoPlayer', '.' + classes.closeVideoBtn, function(evt) {
       var playerId = $(evt.currentTarget).data('controls');
       closeVideo(playerId);
     });
@@ -2201,7 +2122,6 @@ theme.FormStatus = (function() {
     init: init
   };
 })();
-
 
 /* ================ TEMPLATES ================ */
 (function() {
@@ -2275,13 +2195,9 @@ theme.customerTemplates = (function() {
     // Initialize observers on address selectors, defined in shopify_common.js
     if (Shopify) {
       // eslint-disable-next-line no-new
-      new Shopify.CountryProvinceSelector(
-        'AddressCountryNew',
-        'AddressProvinceNew',
-        {
-          hideElement: 'AddressProvinceContainerNew'
-        }
-      );
+      new Shopify.CountryProvinceSelector('AddressCountryNew', 'AddressProvinceNew', {
+        hideElement: 'AddressProvinceContainerNew'
+      });
     }
 
     // Initialize each edit form's country/province selector
@@ -2313,11 +2229,7 @@ theme.customerTemplates = (function() {
       var confirmMessage = $el.data('confirm-message');
 
       // eslint-disable-next-line no-alert
-      if (
-        confirm(
-          confirmMessage || 'Are you sure you wish to delete this address?'
-        )
-      ) {
+      if (confirm(confirmMessage || 'Are you sure you wish to delete this address?')) {
         Shopify.postLink('/account/addresses/' + formId, {
           parameters: { _method: 'delete' }
         });
@@ -2348,7 +2260,6 @@ theme.customerTemplates = (function() {
     }
   };
 })();
-
 
 /*================ SECTIONS ================*/
 window.theme = window.theme || {};
@@ -2394,9 +2305,7 @@ theme.Cart = (function() {
       var $updateLine = $('.' + $evtTarget.data('target'));
       var isExpanded = $evtTarget.attr('aria-expanded') === 'true';
 
-      $evtTarget
-        .toggleClass(config.showEditClass)
-        .attr('aria-expanded', !isExpanded);
+      $evtTarget.toggleClass(config.showEditClass).attr('aria-expanded', !isExpanded);
       $updateLine.toggleClass(config.showClass);
     },
 
@@ -2452,9 +2361,7 @@ theme.Filters = (function() {
 
     this.$filterSelect = $(selectors.filterSelection, $container);
     this.$sortSelect = $(selectors.sortSelection, $container);
-    this.$selects = $(selectors.filterSelection, $container).add(
-      $(selectors.sortSelection, $container)
-    );
+    this.$selects = $(selectors.filterSelection, $container).add($(selectors.sortSelection, $container));
 
     this.defaultSort = this._getDefaultSortValue();
     this.$selects.removeClass('hidden');
@@ -2485,8 +2392,7 @@ theme.Filters = (function() {
         var urlStripped = url.replace(window.location.hash, '');
         query = query !== '' ? '?q=' + query + '&' : '?';
 
-        window.location.href =
-          urlStripped + query + sort + selectors.mainContent;
+        window.location.href = urlStripped + query + sort + selectors.mainContent;
       } else {
         // clean up our url if the sort value is blank for default
         window.location.href = url;
@@ -2608,13 +2514,7 @@ theme.Maps = (function() {
 
     $(selectors.section).addClass(classes.mapError);
     $(selectors.map).remove();
-    $(selectors.mapOverlay).after(
-      '<div class="' +
-        classes.errorMsg +
-        '">' +
-        theme.strings.authError +
-        '</div>'
-    );
+    $(selectors.mapOverlay).after('<div class="' + classes.errorMsg + '">' + theme.strings.authError + '</div>');
   };
 
   function Map(container) {
@@ -2634,9 +2534,7 @@ theme.Maps = (function() {
       if (apiStatus !== 'loading') {
         apiStatus = 'loading';
         if (typeof window.google === 'undefined') {
-          $.getScript(
-            'https://maps.googleapis.com/maps/api/js?key=' + this.key
-          ).then(function() {
+          $.getScript('https://maps.googleapis.com/maps/api/js?key=' + this.key).then(function() {
             apiStatus = 'loaded';
             initAllMaps();
           });
@@ -2728,13 +2626,7 @@ theme.Maps = (function() {
             $map
               .parent()
               .addClass(classes.mapError)
-              .html(
-                '<div class="' +
-                  classes.errorMsg +
-                  '">' +
-                  errorMessage +
-                  '</div>'
-              );
+              .html('<div class="' + classes.errorMsg + '">' + errorMessage + '</div>');
           }
         });
     },
@@ -2801,13 +2693,9 @@ theme.Product = (function() {
       return;
     }
 
-    this.productSingleObject = JSON.parse(
-      document.getElementById('ProductJson-' + sectionId).innerHTML
-    );
+    this.productSingleObject = JSON.parse(document.getElementById('ProductJson-' + sectionId).innerHTML);
 
-    this.settings.zoomEnabled = $(this.selectors.productImageWraps).hasClass(
-      'js-zoom-enabled'
-    );
+    this.settings.zoomEnabled = $(this.selectors.productImageWraps).hasClass('js-zoom-enabled');
 
     this._initBreakpoints();
     this._stringOverrides();
@@ -2865,8 +2753,7 @@ theme.Product = (function() {
     _initVariants: function() {
       var options = {
         $container: this.$container,
-        enableHistoryState:
-          this.$container.data('enable-history-state') || false,
+        enableHistoryState: this.$container.data('enable-history-state') || false,
         singleOptionSelector: this.selectors.singleOptionSelector,
         originalSelectorId: this.selectors.originalSelectorId,
         product: this.productSingleObject
@@ -2874,22 +2761,10 @@ theme.Product = (function() {
 
       this.variants = new slate.Variants(options);
 
-      this.$container.on(
-        'variantChange' + this.settings.namespace,
-        this._updateAvailability.bind(this)
-      );
-      this.$container.on(
-        'variantImageChange' + this.settings.namespace,
-        this._updateImages.bind(this)
-      );
-      this.$container.on(
-        'variantPriceChange' + this.settings.namespace,
-        this._updatePrice.bind(this)
-      );
-      this.$container.on(
-        'variantSKUChange' + this.settings.namespace,
-        this._updateSKU.bind(this)
-      );
+      this.$container.on('variantChange' + this.settings.namespace, this._updateAvailability.bind(this));
+      this.$container.on('variantImageChange' + this.settings.namespace, this._updateImages.bind(this));
+      this.$container.on('variantPriceChange' + this.settings.namespace, this._updatePrice.bind(this));
+      this.$container.on('variantSKUChange' + this.settings.namespace, this._updateSKU.bind(this));
     },
 
     _initImageSwitch: function() {
@@ -2921,24 +2796,16 @@ theme.Product = (function() {
       $(self.selectors.addToCart).on('click', function(evt) {
         var isInvalidQuantity = $quantityInput.val() <= 0;
 
-        $(self.selectors.errorQuantityMessage).toggleClass(
-          self.classes.hidden,
-          !isInvalidQuantity
-        );
+        $(self.selectors.errorQuantityMessage).toggleClass(self.classes.hidden, !isInvalidQuantity);
 
         if (isInvalidQuantity) {
           $quantityInput
-            .attr(
-              'aria-describedby',
-              'error-quantity-' + self.settings.sectionId
-            )
+            .attr('aria-describedby', 'error-quantity-' + self.settings.sectionId)
             .attr('aria-invalid', true);
           $(self.selectors.errorQuantityMessage).focus();
           evt.preventDefault();
         } else {
-          $quantityInput
-            .removeAttr('aria-describedby')
-            .removeAttr('aria-invalid');
+          $quantityInput.removeAttr('aria-describedby').removeAttr('aria-invalid');
         }
       });
     },
@@ -2948,17 +2815,10 @@ theme.Product = (function() {
 
       // If there is no element passed, find it by the current product image
       if (typeof imageId === 'undefined') {
-        imageId = $(this.selectors.productImageWraps + ":not('.hide')").data(
-          'image-id'
-        );
+        imageId = $(this.selectors.productImageWraps + ":not('.hide')").data('image-id');
       }
 
-      var $thumbnail = $(
-        this.selectors.productThumbImages +
-          "[data-thumbnail-id='" +
-          imageId +
-          "']"
-      );
+      var $thumbnail = $(this.selectors.productThumbImages + "[data-thumbnail-id='" + imageId + "']");
 
       $(this.selectors.productThumbImages)
         .removeClass(activeClass)
@@ -2969,15 +2829,9 @@ theme.Product = (function() {
     },
 
     _switchImage: function(imageId) {
-      var $newImage = $(
-        this.selectors.productImageWraps + "[data-image-id='" + imageId + "']",
-        this.$container
-      );
+      var $newImage = $(this.selectors.productImageWraps + "[data-image-id='" + imageId + "']", this.$container);
       var $otherImages = $(
-        this.selectors.productImageWraps +
-          ":not([data-image-id='" +
-          imageId +
-          "'])",
+        this.selectors.productImageWraps + ":not([data-image-id='" + imageId + "'])",
         this.$container
       );
 
@@ -3046,25 +2900,15 @@ theme.Product = (function() {
 
       // Update pricing information
       var regularLabel = '';
-      var regularPrice = theme.Currency.formatMoney(
-        variant.price,
-        theme.moneyFormat
-      );
+      var regularPrice = theme.Currency.formatMoney(variant.price, theme.moneyFormat);
       var saleLabel = '';
       var salePrice = '';
 
       if (variant.compare_at_price > variant.price) {
         regularLabel = theme.strings.regularPrice;
-        regularPrice =
-          theme.Currency.formatMoney(
-            variant.compare_at_price,
-            theme.moneyFormat
-          ) + ',';
+        regularPrice = theme.Currency.formatMoney(variant.compare_at_price, theme.moneyFormat) + ',';
         saleLabel = theme.strings.sale;
-        salePrice = theme.Currency.formatMoney(
-          variant.price,
-          theme.moneyFormat
-        );
+        salePrice = theme.Currency.formatMoney(variant.price, theme.moneyFormat);
       }
 
       liveRegionText = liveRegionText
@@ -3079,9 +2923,7 @@ theme.Product = (function() {
 
     _updateLiveRegion: function(evt) {
       var variant = evt.variant;
-      var liveRegion = this.container.querySelector(
-        this.selectors.productStatus
-      );
+      var liveRegion = this.container.querySelector(this.selectors.productStatus);
       liveRegion.textContent = this._liveRegionText(variant);
       liveRegion.setAttribute('aria-hidden', false);
 
@@ -3145,29 +2987,18 @@ theme.Product = (function() {
 
       // Unavailable
       if (!variant) {
-        $priceContainer
-          .addClass(this.classes.productUnavailable)
-          .attr('aria-hidden', true);
+        $priceContainer.addClass(this.classes.productUnavailable).attr('aria-hidden', true);
         return;
       }
 
       // On sale
       if (variant.compare_at_price > variant.price) {
-        $regularPrice.html(
-          theme.Currency.formatMoney(
-            variant.compare_at_price,
-            theme.moneyFormat
-          )
-        );
-        $salePrice.html(
-          theme.Currency.formatMoney(variant.price, theme.moneyFormat)
-        );
+        $regularPrice.html(theme.Currency.formatMoney(variant.compare_at_price, theme.moneyFormat));
+        $salePrice.html(theme.Currency.formatMoney(variant.price, theme.moneyFormat));
         $priceContainer.addClass(this.classes.productOnSale);
       } else {
         // Regular price
-        $regularPrice.html(
-          theme.Currency.formatMoney(variant.price, theme.moneyFormat)
-        );
+        $regularPrice.html(theme.Currency.formatMoney(variant.price, theme.moneyFormat));
       }
     },
 
@@ -3270,9 +3101,7 @@ theme.Quotes = (function() {
 
     onBlockSelect: function(evt) {
       // Ignore the cloned version
-      var $slide = $(
-        '.quotes-slide--' + evt.detail.blockId + ':not(.slick-cloned)'
-      );
+      var $slide = $('.quotes-slide--' + evt.detail.blockId + ':not(.slick-cloned)');
       var slideIndex = $slide.data('slick-index');
 
       // Go to selected slide, pause autoplay
@@ -3325,34 +3154,27 @@ theme.SlideshowSection = (function() {
   return SlideshowSection;
 })();
 
-theme.SlideshowSection.prototype = _.assignIn(
-  {},
-  theme.SlideshowSection.prototype,
-  {
-    onUnload: function() {
-      delete theme.slideshows[this.slideshow];
-    },
+theme.SlideshowSection.prototype = _.assignIn({}, theme.SlideshowSection.prototype, {
+  onUnload: function() {
+    delete theme.slideshows[this.slideshow];
+  },
 
-    onBlockSelect: function(evt) {
-      var $slideshow = $(this.slideshow);
+  onBlockSelect: function(evt) {
+    var $slideshow = $(this.slideshow);
 
-      // Ignore the cloned version
-      var $slide = $(
-        '.slideshow__slide--' + evt.detail.blockId + ':not(.slick-cloned)'
-      );
-      var slideIndex = $slide.data('slick-index');
+    // Ignore the cloned version
+    var $slide = $('.slideshow__slide--' + evt.detail.blockId + ':not(.slick-cloned)');
+    var slideIndex = $slide.data('slick-index');
 
-      // Go to selected slide, pause autoplay
-      $slideshow.slick('slickGoTo', slideIndex).slick('slickPause');
-    },
+    // Go to selected slide, pause autoplay
+    $slideshow.slick('slickGoTo', slideIndex).slick('slickPause');
+  },
 
-    onBlockDeselect: function() {
-      // Resume autoplay
-      $(this.slideshow).slick('slickPlay');
-    }
+  onBlockDeselect: function() {
+    // Resume autoplay
+    $(this.slideshow).slick('slickPlay');
   }
-);
-
+});
 
 $(document).ready(function() {
   var sections = new theme.Sections();
@@ -3415,5 +3237,22 @@ theme.init = function() {
 
 $(theme.init);
 
+var productContainer = $('#shopify-section-product-template');
+var productForm = $('.product-form');
+var productFormPosition = productForm.offset();
 
-// tippy('button');
+function onScroll() {
+  requestAnimationFrame(function() {
+    console.log(productFormPosition);
+    console.log($(window).scrollTop());
+    if ($(window).scrollTop() > productFormPosition.top) {
+      productForm.css('position', 'fixed').css('top', '0');
+      productContainer.addClass('scrolled');
+    } else {
+      productForm.css('position', 'static');
+      productContainer.removeClass('scrolled');
+    }
+  });
+}
+
+window.addEventListener('scroll', onScroll);
